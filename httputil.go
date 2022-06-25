@@ -14,7 +14,8 @@ var validate = validator.New()
 type reqType uint8
 
 const (
-	JSON reqType = iota
+	Nil reqType = iota
+	JSON
 	XML
 	Form
 	Query
@@ -40,6 +41,8 @@ type Handler struct{}
 // 序列化请求以及进行校验
 func (b *Handler) DoReq(ctx *gin.Context, typ_ reqType, req interface{}) error {
 	switch typ_ {
+	case Nil:
+		return nil
 	case JSON:
 		if err := ctx.ShouldBindWith(req, binding.JSON); err != nil {
 			return fmt.Errorf("参数绑定失败: %w", err)
